@@ -26,8 +26,11 @@ function onInput(ev){
                 countryInfo.innerHTML ='';
                 countryListEL.innerHTML=(createMarkupList(data))
             }}
-    ).catch(err=> console.log('Error',err))
-}
+    ).catch(err=>{
+            if (err.message === '404'){
+            Notiflix.Notify.info("Oops, there is no country with that name");
+            }}
+)
     
 function createMarkupList(arr){
     return arr.map(({flags, name: {official}})=> 
