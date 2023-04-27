@@ -22,15 +22,23 @@ function onInput(ev){
             if(data.length===1){
                 countryListEL.innerHTML='';
                 countryInfo.innerHTML=(createMarkupCountry(data))
-            }else{
+            }else if(data.length>=2 && data.length<=10){
                 countryInfo.innerHTML ='';
                 countryListEL.innerHTML=(createMarkupList(data))
+            }else{
+                countryListEL.innerHTML='';
+                countryInfo.innerHTML ='';
             }}
     ).catch(err=>{
-            if (err.message === '404'){
-            Notiflix.Notify.info("Oops, there is no country with that name");
-            }}
-)
+        countryListEL.innerHTML='';
+        countryInfo.innerHTML ='';
+            if (err.status === '404'){
+            Notiflix.Notify.failure("Oops, there is no country with that name");
+            }
+            // else{Notiflix.Notify.failure(`${err.message}`)}
+            // console.log('err.message',err.message)
+        }
+)}
     
 function createMarkupList(arr){
     return arr.map(({flags, name: {official}})=> 
@@ -45,6 +53,6 @@ function createMarkupCountry(arr){
     `<h1><img style="width:40px; height:30px" src="${flags.svg}" alt="${official}"> ${official}</h1>
     <h2>Capital: <span style="font-weight: normal">${capital}</span></h2>
     <h2>Population: <span style="font-weight: normal">${population}</span></h2>
-    <h2>Languages: <span style="font-weight: normal">${Object.values(languages)}</span></h2>`
+    <h2>Languages: <span style="font-weight: normal">${Object.values(languages).join(', ')}</span></h2>`
         ).join('')
 }
